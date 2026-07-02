@@ -95,14 +95,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden; /* ensures image stays inside circle */
     }
 
-    .logo-circle img {
-      width: 80%;
-      height: auto;
-      object-fit: contain;
-      display: block;
+    .logo-circle svg {
+      width: 50px;
+      height: 50px;
+      stroke: #f5f0e6;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     /* title & date */
@@ -123,7 +125,7 @@
       margin: 10px 0 8px;
     }
 
-    /* COUNTDOWN */
+    /* ----- COUNTDOWN (new) ----- */
     .countdown-wrap {
       width: 100%;
       display: flex;
@@ -398,12 +400,7 @@
   <div class="logo-wrap">
     <div class="logo-glow"></div>
     <div class="logo-circle">
-      <!-- 
-        Place your logo image file (e.g., logo.png, logo.jpg, logo.svg) 
-        in the same folder as this HTML file and name it "logo" 
-        (with the proper extension). Update the src below accordingly.
-      -->
-      <img src="logo.png" alt="NCS Model United Nations Logo" />
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
     </div>
   </div>
 
@@ -512,7 +509,8 @@
 
   // ----- COUNTDOWN -----
   (function() {
-    const targetDate = new Date(2026, 9, 6, 0, 0, 0).getTime();
+    // Conference start: October 6, 2026 at 00:00:00 (local time)
+    const targetDate = new Date(2026, 9, 6, 0, 0, 0).getTime(); // month is 0-indexed: 9 = October
 
     const daysEl = document.getElementById('cdDays');
     const hoursEl = document.getElementById('cdHours');
@@ -530,11 +528,13 @@
       let diff = targetDate - now;
 
       if (diff <= 0) {
+        // Conference has started
         countdownWrap.style.display = 'none';
         endedMsg.style.display = 'block';
         return;
       }
 
+      // If countdown was hidden, show it again (in case it was hidden)
       countdownWrap.style.display = 'flex';
       endedMsg.style.display = 'none';
 
@@ -552,6 +552,7 @@
       secondsEl.textContent = pad(seconds);
     }
 
+    // Update immediately, then every second
     updateCountdown();
     setInterval(updateCountdown, 1000);
   })();
