@@ -22,6 +22,51 @@
       display: flex;
       justify-content: center;
       padding: 52px 20px 36px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Sparkle background layer */
+    .sparkle-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #eccd8c;
+      border-radius: 50%;
+      box-shadow: 0 0 12px 4px rgba(236, 205, 140, 0.3);
+      animation: floatSparkle linear infinite;
+      opacity: 0;
+    }
+
+    .sparkle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; width: 8px; height: 8px; }
+    .sparkle:nth-child(2) { left: 25%; animation-duration: 14s; animation-delay: 2s; width: 5px; height: 5px; }
+    .sparkle:nth-child(3) { left: 45%; animation-duration: 16s; animation-delay: 4s; width: 10px; height: 10px; }
+    .sparkle:nth-child(4) { left: 65%; animation-duration: 13s; animation-delay: 1s; width: 6px; height: 6px; }
+    .sparkle:nth-child(5) { left: 80%; animation-duration: 15s; animation-delay: 3s; width: 7px; height: 7px; }
+    .sparkle:nth-child(6) { left: 35%; animation-duration: 18s; animation-delay: 5s; width: 9px; height: 9px; }
+    .sparkle:nth-child(7) { left: 55%; animation-duration: 11s; animation-delay: 7s; width: 5px; height: 5px; }
+    .sparkle:nth-child(8) { left: 90%; animation-duration: 17s; animation-delay: 2s; width: 8px; height: 8px; }
+    .sparkle:nth-child(9) { left: 15%; animation-duration: 14s; animation-delay: 6s; width: 6px; height: 6px; }
+    .sparkle:nth-child(10) { left: 70%; animation-duration: 12s; animation-delay: 8s; width: 7px; height: 7px; }
+    .sparkle:nth-child(11) { left: 5%; animation-duration: 19s; animation-delay: 3s; width: 5px; height: 5px; }
+    .sparkle:nth-child(12) { left: 50%; animation-duration: 16s; animation-delay: 0s; width: 10px; height: 10px; }
+
+    @keyframes floatSparkle {
+      0% { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(720deg) scale(1.2); opacity: 0; }
     }
 
     .page {
@@ -31,6 +76,7 @@
       flex-direction: column;
       align-items: center;
       position: relative;
+      z-index: 1;
     }
 
     /* share button */
@@ -50,10 +96,12 @@
       cursor: pointer;
       transition: 0.2s;
       padding: 0;
+      animation: pulseGlow 2s infinite alternate;
     }
 
     .share-btn:hover {
       border-color: rgba(255, 255, 255, 0.8);
+      transform: scale(1.1);
     }
 
     .share-btn svg {
@@ -75,6 +123,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .logo-glow {
@@ -83,6 +137,12 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(79, 209, 197, 0.32), transparent 70%);
       filter: blur(4px);
+      animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
     }
 
     .logo-circle {
@@ -115,6 +175,12 @@
       text-align: center;
       line-height: 1.35;
       padding: 0 6px;
+      animation: titleBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes titleBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
     }
 
     .dates {
@@ -145,6 +211,17 @@
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(2px);
       transition: border-color 0.2s;
+      animation: cdPulse 2s infinite alternate;
+    }
+
+    .cd-item:nth-child(1) { animation-delay: 0s; }
+    .cd-item:nth-child(2) { animation-delay: 0.3s; }
+    .cd-item:nth-child(3) { animation-delay: 0.6s; }
+    .cd-item:nth-child(4) { animation-delay: 0.9s; }
+
+    @keyframes cdPulse {
+      0% { border-color: rgba(255, 255, 255, 0.25); box-shadow: 0 0 10px rgba(236, 205, 140, 0.1); }
+      100% { border-color: rgba(236, 205, 140, 0.6); box-shadow: 0 0 20px rgba(236, 205, 140, 0.2); }
     }
 
     .cd-item:hover {
@@ -201,10 +278,29 @@
       transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
       opacity: 0;
       animation: fadeUp 0.5s ease forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .link-btn:hover::after {
+      opacity: 1;
     }
 
     .link-btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px) scale(1.02);
       border-color: rgba(255, 255, 255, 0.8);
       box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
     }
@@ -266,7 +362,7 @@
 
     .link-btn:hover .chevron {
       opacity: 1;
-      transform: translateX(3px);
+      transform: translateX(5px);
     }
 
     .link-btn.register {
@@ -281,6 +377,7 @@
 
     .link-btn.register:hover {
       box-shadow: 0 10px 30px rgba(201, 155, 63, 0.45);
+      transform: translateY(-3px) scale(1.03);
     }
 
     @keyframes fadeUp {
@@ -318,10 +415,19 @@
       color: #f5f0e6;
       text-decoration: none;
       transition: 0.2s;
+      animation: socialFloat 3s ease-in-out infinite;
+    }
+
+    .socials a:nth-child(1) { animation-delay: 0s; }
+
+    @keyframes socialFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
 
     .socials a:hover {
       border-color: rgba(255, 255, 255, 0.8);
+      transform: scale(1.15);
     }
 
     .socials svg {
@@ -385,10 +491,34 @@
         animation: none;
         opacity: 1;
       }
+      .sparkle {
+        animation: none;
+        display: none;
+      }
+      .logo-wrap, h1, .cd-item, .socials a, .share-btn {
+        animation: none;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Sparkles -->
+  <div class="sparkle-container">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+
 <div class="page">
 
   <!-- share -->
@@ -447,7 +577,7 @@
       <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
       <span class="text">
         <span class="title">Venue</span>
-        <span class="subtitle">📍 PRG9+X5C, Taxila</span>
+        <span class="subtitle">📍 O-Block New City Phase 2 , Wah Cantt </span>
       </span>
       <span class="chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
     </a>
